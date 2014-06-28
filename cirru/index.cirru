@@ -3,10 +3,10 @@ doctype
 
 html
   head
-    title DocView
+    title "Blossom Scores"
     meta (:charset utf-8)
     link (:rel stylesheet) (:href css/style.css)
-    link (:rel icon) (:type image/png) (:href png/docview.png)
+    link (:rel icon) (:type image/png) (:href png/blossom.png)
     @if (@ inDev) $ @block
       link (:rel stylesheet) (:href css/dev.css)
     @if (@ inBuild) $ @block

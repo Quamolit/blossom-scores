@@ -75,6 +75,11 @@ dispatcher.update = ->
   viewModels.push type: 'circle', x: hintX, y: hintY, r: 20
   viewModels.push type: 'font', x: hintX, y: hintY, text: store.time
 
+  hintX = innerWidth - 20
+  hintY = innerHeight - 80
+  viewModels.push type: 'circle', x: hintX, y: hintY, r: 30
+  viewModels.push type: 'font', x: hintX, y: hintY, text: store.best
+
   @emit 'change'
 
 model.on 'change', ->

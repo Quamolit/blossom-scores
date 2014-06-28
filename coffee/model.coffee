@@ -9,12 +9,15 @@ dispatcher = new EventEmitter
 module.exports = dispatcher
 
 dispatcher.reset = (x, y) ->
+  lastStore = store
   store =
     points: 0
     x: local.x or 400
     y: local.y or 300
     petals: tool.randomPoints()
     time: config.time
+    best: lastStore.best or 0
+
   dispatcher.timer()
   @emit 'change'
 
@@ -35,4 +38,8 @@ dispatcher.choose = (shape) ->
   store.petals = tool.randomPoints()
   store.x = shape.x
   store.y = shape.y
+
+  if store.points > store.best
+    store.best = store.points
+
   @emit 'change'
