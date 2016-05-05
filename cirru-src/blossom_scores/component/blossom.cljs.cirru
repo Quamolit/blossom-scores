@@ -30,39 +30,52 @@ defn remove? (instant)
     = 0 $ :presence instant
     = 0 $ :presence-v instant
 
-defn handle-click (score reset-scores)
+defn handle-click
+  score reset-scores next-base time-passed
   fn (event dispatch)
-    reset-scores
-    .log js/console score
+    if (< time-passed 30)
+      do (reset-scores next-base)
+        dispatch :hit score
 
-defn render (data reset-scores)
+defn render
+  data base-point reset-scores time-passed
   fn (state mutate)
     fn (instant tick)
       let
         (n 6)
           unit-angle $ / 360 n
+          base-x $ first base-point
+          base-y $ last base-point
         alpha
           {} :style $ {} :opacity (:presence instant)
           ->> data
             map-indexed $ fn (i score)
               let
                 (r $ * 80 (:presence instant))
-                  x $ * r
-                    sin $ * unit-angle i
-                  y $ * r
-                    cos $ * unit-angle i
+                  x $ + base-x
+                    * r $ sin (* unit-angle i)
+
+                  y $ + base-y
+                    * r $ cos (* unit-angle i)
+
+                  next-base $ [] x y
 
                 [] i $ arc
                   {} :style
                     {}
-                      :fill-style $ hsl 240 80 70
+                      :fill-style $ hsl
+                        mod (* 4 score)
+                          , 360
+                        , 80 70
+
                       :x x
                       :y y
                       :s-angle 0
                       :e-angle 360
                       :r 20
+
                     , :event
-                    {} :click $ handle-click score reset-scores
+                    {} :click $ handle-click score reset-scores next-base time-passed
 
                   text $ {} :style
                     {} (:x x)

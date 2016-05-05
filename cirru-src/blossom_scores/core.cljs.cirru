@@ -2,15 +2,20 @@
 ns blossom-scores.core $ :require
   [] devtools.core :as devtools
   [] quamolit.core :refer $ [] setup-events render-page configure-canvas
+  [] quamolit.util.time :refer $ [] get-tick
   [] blossom-scores.component.container :refer $ [] comp-container
+  [] blossom-scores.schema :as schema
+  [] blossom-scores.updater.core :refer $ [] updater
 
-defonce store-ref $ atom ({})
+defonce store-ref $ atom
+  assoc schema/store :begin $ get-tick
 
 defonce states-ref $ atom ({})
 
 defonce loop-ref $ atom nil
 
-defn dispatch $ op op-data
+defn dispatch (op op-data)
+  reset! store-ref $ updater @store-ref op op-data (get-tick)
 
 defn render-loop ()
   let
