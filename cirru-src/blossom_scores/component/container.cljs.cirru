@@ -6,6 +6,7 @@ ns blossom-scores.component.container $ :require
   [] blossom-scores.component.blossom :refer $ [] comp-blossom
   [] quamolit.util.time :refer $ [] get-tick
   [] quamolit.component.debug :refer $ [] comp-debug
+  [] blossom-scores.schema :as schema
 
 defn new-data (base-point)
   [] (get-tick)
@@ -41,11 +42,11 @@ defn render (store)
               :y 200
               :w 40
               :h 40
-              :surface-color $ hsl 30 80 60
+              :surface-color $ hsl 30 80 50
               :text-color $ hsl 0 0 100
               :text $ str (:scores store)
               :font-size 14
-              :font-family |Menlo
+              :font-family "|Menlo, Courier"
 
           group {} $ let
             (blossom-key $ first state)
@@ -57,10 +58,10 @@ defn render (store)
             {} (:x -300)
               :y 200
               :w 60
-              :text $ if (> time-passed 30)
-                , |>30
-                str $ - 30 time-passed
-              :font-family |Menlo
+              :text $ if (> time-passed schema/duration)
+                , |Restart
+                str $ - schema/duration time-passed
+              :font-family "|Menlo, Courier"
               :font-size 14
               :text-color $ hsl 0 0 100
               :surface-color $ hsl 0 90 70
