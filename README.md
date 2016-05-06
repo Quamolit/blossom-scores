@@ -2,6 +2,11 @@
 Blossom Scores
 ------
 
+Demo http://quamolit.org/blossom-scores/
+
+> You need to turn on `ExperimentalCanvasFeatures` to run this app.
+> https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/addHitRegion
+
 A tiny MVC game exercise based on HTML5 canvas.
 
 * track spots to increase your score
