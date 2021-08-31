@@ -2,10 +2,7 @@
 Blossom Scores
 ------
 
-Demo http://quamolit.org/blossom-scores/
-
-> You need to turn on `ExperimentalCanvasFeatures` to run this app.
-> https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/addHitRegion
+Demo http://repo.quamolit.org/blossom-scores/
 
 A tiny MVC game exercise based on HTML5 canvas.
 
@@ -13,9 +10,9 @@ A tiny MVC game exercise based on HTML5 canvas.
 * press Space to restart
 * you have only 30 seconds in each race
 
-### Usage
+### Workflow
 
-Read https://github.com/mvc-works/boot-workflow
+https://github.com/Quamolit/quamolit-workflow
 
 ### License
 
