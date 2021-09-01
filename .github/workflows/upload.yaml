@@ -39,7 +39,7 @@ jobs:
     - name: "prepare modules"
       run: >
         mkdir -p ~/.config/calcit/modules/ && cd ~/.config/calcit/modules/
-        && git clone https://github.com/Quamolit/quamolit.calcit.git --branch 0.0.7
+        && git clone https://github.com/Quamolit/quamolit.calcit.git --branch 0.0.8
         && git clone https://github.com/mvc-works/pointed-prompt.git
 
     - name: "compiles to js"
