@@ -39,13 +39,12 @@
                     d! cursor $ assoc state :active
                       gen-blossom $ [] 0 0
                 group ({})
-                  button $ &{} :style
-                    {} (:x -240) (:y 200) (:w 40) (:h 40)
-                      :surface-color $ hsl 30 80 50
-                      :text-color $ hsl 0 0 100
-                      :text $ str (:scores store)
-                      :font-size 14
-                      :font-family "|Menlo, Courier"
+                  button $ {} (:x -240) (:y 200) (:w 40) (:h 40)
+                    :surface-color $ hsl 30 80 50
+                    :text-color $ hsl 0 0 100
+                    :text $ str (:scores store)
+                    :font-size 14
+                    :font-family "|Menlo, Courier"
                   group ({})
                     let
                         active $ :active state
@@ -60,17 +59,16 @@
                           >> states $ :id data
                           {}
                           fn (& args) nil
-                  button $ &{} :style
-                    {} (:x -300) (:y 200) (:w 60)
-                      :text $ if (:running? store)
-                        str $ :countdown store
-                        , |Restart
-                      :font-family "|Menlo, Courier"
-                      :font-size 14
-                      :text-color $ hsl 0 0 100
-                      :surface-color $ hsl 0 90 70
-                    , :event
-                      &{} :click $ fn (e d!) (d! :restart nil)
+                  button $ {} (:x -300) (:y 200) (:w 60)
+                    :text $ if (:running? store)
+                      str $ :countdown store
+                      , |Restart
+                    :font-family "|Menlo, Courier"
+                    :font-size 14
+                    :text-color $ hsl 0 0 100
+                    :surface-color $ hsl 0 90 70
+                    :event $ &{} :click
+                      fn (e d!) (d! :restart nil)
                         d! cursor $ assoc state :active
                           gen-blossom $ [] 0 0
         |comp-blossom $ quote
@@ -87,41 +85,36 @@
                     and leaving? $ = 0 opacity
                     on-remove k d!
                 translate
-                  {} $ :style
-                    {}
-                      :x $ first base-point
-                      :y $ last base-point
-                  scale
-                    &{} :style $ &{} :ratio opacity
-                    , & $ -> data
-                      map-indexed $ fn (i score)
-                        let
-                            r $ * 80 1
-                            x $ * r
-                              sin $ * pi-ratio unit-angle i
-                            y $ * r
-                              cos $ * pi-ratio unit-angle i
-                            next-base $ []
-                              + (first base-point) x
-                              + (last base-point) y
-                          arc
-                            &{} :style
-                              {}
-                                :fill-style $ hsl
-                                  .rem (* 4 score) 360
-                                  , 90 50
-                                :x x
-                                :y y
-                                :s-angle 0
-                                :e-angle 360
-                                :r 28
-                              , :event $ &{} :click
-                                fn (e d!) (; println "\"hit:" base-point next-base) (d! :hit score) (call-next next-base d!)
-                            text $ &{} :style
-                              {} (:x x) (:y y) (:font-family "|Menlo, Courier")
-                                :text $ str score
-                                :fill-style $ hsl 0 0 100
-                                :size 16
+                  {}
+                    :x $ first base-point
+                    :y $ last base-point
+                  scale (&{} :ratio opacity) & $ -> data
+                    map-indexed $ fn (i score)
+                      let
+                          r $ * 80 1
+                          x $ * r
+                            sin $ * pi-ratio unit-angle i
+                          y $ * r
+                            cos $ * pi-ratio unit-angle i
+                          next-base $ []
+                            + (first base-point) x
+                            + (last base-point) y
+                        arc
+                          {}
+                            :fill-style $ hsl
+                              .rem (* 4 score) 360
+                              , 90 50
+                            :x x
+                            :y y
+                            :s-angle 0
+                            :e-angle 360
+                            :r 28
+                            :event $ &{} :click
+                              fn (e d!) (; println "\"hit:" base-point next-base) (d! :hit score) (call-next next-base d!)
+                          text $ {} (:x x) (:y y) (:font-family "|Menlo, Courier")
+                            :text $ str score
+                            :fill-style $ hsl 0 0 100
+                            :size 16
         |gen-blossom $ quote
           defn gen-blossom (position)
             {}
