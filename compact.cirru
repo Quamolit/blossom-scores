@@ -52,7 +52,8 @@
                         comp-fade-fn
                           >> states $ :id active
                           {}
-                          fn (next-states opacity stage) (comp-blossom next-states active false opacity stage call-next rm-leaving)
+                          fn (next-states opacity stage)
+                            comp-blossom next-states active false opacity stage call-next rm-leaving $ :running? store
                     , & $ -> state (:leaving)
                       .map $ fn (data)
                         comp-fade-fn
@@ -72,7 +73,7 @@
                         d! cursor $ assoc state :active
                           gen-blossom $ [] 0 0
         |comp-blossom $ quote
-          defcomp comp-blossom (states blossom leaving? opacity stage call-next on-remove)
+          defcomp comp-blossom (states blossom leaving? opacity stage call-next on-remove running?)
             let
                 k $ :id blossom
                 data $ :scores blossom
@@ -109,8 +110,8 @@
                             :s-angle 0
                             :e-angle 360
                             :r 28
-                            :event $ &{} :click
-                              fn (e d!) (; println "\"hit:" base-point next-base) (d! :hit score) (call-next next-base d!)
+                            :event $ if running?
+                              &{} :click $ fn (e d!) (; println "\"hit:" base-point next-base) (d! :hit score) (call-next next-base d!)
                           text $ {} (:x x) (:y y) (:font-family "|Menlo, Courier")
                             :text $ str score
                             :fill-style $ hsl 0 0 100
