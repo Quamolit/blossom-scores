@@ -11,6 +11,7 @@
           quamolit.alias :refer $ defcomp group >> line arc text
           quamolit.render.element :refer $ translate button alpha scale
           quamolit.comp.fade-in-out :refer $ comp-fade-fn
+          quamolit.hud-logs :refer $ hud-log
       :defs $ {}
         |comp-container $ quote
           defcomp comp-container (store)
@@ -23,15 +24,11 @@
                 tab $ :tab state
                 call-next $ fn (position d!) (; println "\"next position:" position)
                   d! cursor $ -> state
-                    update :leaving $ fn (xs)
-                      conj xs $ :active state
+                    assoc :leaving $ [] (:active state)
                     assoc :active $ gen-blossom position
-                rm-leaving $ fn (id d!)
-                  d! cursor $ update state :leaving
-                    fn (xs)
-                      -> xs $ filter
-                        fn (x)
-                          not id $ :id x
+              ; hud-log "\"active" $ :active state
+              ; hud-log "\"leaving" $ :leaving state
+              ; hud-log "\"count" $ count (:leaving state)
               []
                 fn (elapsed d!)
                   if
@@ -53,7 +50,7 @@
                           >> states $ :id active
                           {}
                           fn (next-states opacity stage)
-                            comp-blossom next-states active false opacity stage call-next rm-leaving $ :running? store
+                            comp-blossom next-states active opacity stage call-next $ :running? store
                     , & $ -> state (:leaving)
                       .map $ fn (data)
                         comp-fade-fn
@@ -73,7 +70,7 @@
                         d! cursor $ assoc state :active
                           gen-blossom $ [] 0 0
         |comp-blossom $ quote
-          defcomp comp-blossom (states blossom leaving? opacity stage call-next on-remove running?)
+          defcomp comp-blossom (states blossom opacity stage call-next running?) (; hud-log "\"blossom" stage opacity blossom)
             let
                 k $ :id blossom
                 data $ :scores blossom
@@ -81,10 +78,7 @@
                 n 6
                 unit-angle $ / 360 n
               []
-                fn (elapsed d!)
-                  if
-                    and leaving? $ = 0 opacity
-                    on-remove k d!
+                fn $ elapsed d!
                 translate
                   {}
                     :x $ first base-point
