@@ -10,3 +10,6 @@ node_modules/
 dist/
 .pnp.cjs
 .pnp.loader.mjs
+target/
+test-results/
+playwright-report/
