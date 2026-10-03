@@ -115,6 +115,47 @@ test("默认RAF、画布点击/负分、空格重开、超时和卸载", async (
   expect(errors).toEqual([]);
 });
 
+test("非二进制精确时间的进入/退出终点不会越出Scene透明度范围", async ({
+  page,
+}) => {
+  for (const start of [0.3, 0.7, 1.1, 12.3, 59.9]) {
+    const game = app.restart(app.initial(17), start);
+    const end = start + 0.25;
+    expect(app.alpha_at(game.get(tags.active), end)).toBeCloseTo(1, 14);
+    for (const time of [end - 1e-12, end, end + 1e-12]) {
+      const amount = app.alpha_at(game.get(tags.active), time);
+      expect(amount).toBeGreaterThanOrEqual(0);
+      expect(amount).toBeLessThanOrEqual(1);
+      expect(() =>
+        app.hit_plan(app.sample(game, time, 1000, 700)),
+      ).not.toThrow();
+    }
+    const changed = app.select(game, end, 0);
+    for (const time of [end + 0.25 - 1e-12, end + 0.25, end + 0.25 + 1e-12]) {
+      expect(() =>
+        app.hit_plan(app.sample(changed, time, 1000, 700)),
+      ).not.toThrow();
+      for (const node of data(app.sample(changed, time, 1000, 700)).nodes) {
+        if (node.content[0] === "group") {
+          expect(node.content[1].opacity).toBeGreaterThanOrEqual(0);
+          expect(node.content[1].opacity).toBeLessThanOrEqual(1);
+        }
+      }
+    }
+  }
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("/?seed=17&t=0.3");
+  await page.getByRole("button", { name: "开始游戏", exact: true }).click();
+  await page.evaluate(() => window.blossom.seek(0.55));
+  expect(
+    (await page.evaluate(() => window.blossom.snapshot())).scene.nodes.filter(
+      (node) => node.content[0] === "circle",
+    ),
+  ).toHaveLength(6);
+  expect(errors).toEqual([]);
+});
+
 for (const dpr of [1, 2])
   test(`生产构建原生圆形/文字参考，中间缩放/组透明度 DPR${dpr}`, async ({
     browser,

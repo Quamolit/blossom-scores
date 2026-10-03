@@ -24,13 +24,14 @@
           :code $ quote $ defn alpha-at (item time)
             let
                 target $ if (:exiting? item) 0 1
-              motion/sample-tween
-                motion/ScalarTween :start (:start item) :duration
-                  /
-                    abs $ - target $ :from item
-                    , 4
-                  , :from (:from item) :to target :easing $ motion/Easing :linear
-                , time
+                value $ motion/sample-tween
+                  motion/ScalarTween :start (:start item) :duration
+                    /
+                      abs $ - target $ :from item
+                      , 4
+                    , :from (:from item) :to target :easing $ motion/Easing :linear
+                  , time
+              if (> value 1) 1 $ if (< value 0) 0 value
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ [] 'app.main/Flower 'Number
