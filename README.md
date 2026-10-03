@@ -8,7 +8,7 @@
 
 ## 运行
 
-需要 Node.js 24、Calcit CLI 0.28.0、`caps`；runtime 同步为0.28.0，Quamolit 固定预发布 `0.0.18-alpha.2`，Yarn 使用 node-modules linker。
+需要 Node.js 24、Calcit CLI 0.28.0、`caps`；runtime 同步为0.28.0，Quamolit 固定预发布 `0.0.18-alpha.3`，Yarn 使用 node-modules linker。
 
 ```bash
 corepack enable
@@ -41,7 +41,7 @@ Snapshot 是源码，修改应通过 Calcit `edit/tree/cursor/config` 的原子�
 
 ## English
 
-The restored game uses Calcit 0.28.0 and Quamolit `0.0.18-alpha.2`. Six petals retain signed scores, seeded generation, position chaining and interruptible scale/fade transitions. Press Space or the button to restart a 60-second game. Typed Calcit owns gameplay, Scene construction and hit testing; browser JavaScript wires lifecycle only. Run `yarn compile && yarn dev`; `yarn test` checks actual production interaction and independent DPR1/2 rendering. Canvas2D only; WebGPU/performance and persistent event history are not claimed.
+The restored game uses Calcit 0.28.0 and Quamolit `0.0.18-alpha.3`. Six petals retain signed scores, seeded generation, position chaining and interruptible scale/fade transitions. Press Space or the button to restart a 60-second game. Typed Calcit owns gameplay, Scene construction and hit testing; browser JavaScript wires lifecycle only. Run `yarn compile && yarn dev`; `yarn test` checks actual production interaction and independent DPR1/2 rendering. Canvas2D only; WebGPU/performance and persistent event history are not claimed.
 
 ## License
 
