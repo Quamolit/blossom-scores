@@ -1,15 +1,15 @@
 
 
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Blossom Scores</title><link rel="stylesheet" href="./assets/main.css"/></head>
 <body>
-
-  <canvas id="app" ></canvas>
-  <link rel="stylesheet" type="text/css" href="./assets/main.css" />
-  <style type="text/css">
-    body {
-      margin: 0;
-    }
-  </style>
-
-  <script type="module" src="./main.mjs" ></script>
-
-</body>
+  <canvas id="app" aria-label="花瓣得分游戏"></canvas>
+  <aside aria-label="游戏控制">
+    <h1>Blossom Scores</h1>
+    <p>点击花瓣得分并追随新花朵；每局 60 秒，空格重新开始。</p>
+    <button id="restart">开始游戏</button><button id="pause">暂停动画</button>
+    <output aria-live="off"></output>
+  </aside>
+  <script type="module" src="./main.mjs"></script>
+</body></html>
