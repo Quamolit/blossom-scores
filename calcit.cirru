@@ -31,7 +31,7 @@
                       , 4
                     , :from (:from item) :to target :easing $ motion/Easing :linear
                   , time
-              if (> value 1) 1 $ if (< value 0) 0 value
+              , value
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Number)
             :args $ [] 'app.main/Flower 'Number
