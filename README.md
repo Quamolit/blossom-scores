@@ -39,6 +39,18 @@ Quamolit alpha2 的公共 tween 在浮点终点可能略越过端点，例如 st
 
 Snapshot 是源码，修改应通过 Calcit `edit/tree/cursor/config` 的原子事务，不手工改写。
 
+## 前端部署
+
+COS 仅上传 `dist/`，使用正式 `cos-upload-action@v1.2.0` 的内置
+`public-base-url` 逐文件校验，不增加上传验证脚本。PR 资源前缀为
+`Quamolit/blossom-scores/pr/<PR编号>/<run>/<attempt>/`，原
+`https://repo.tiye.me/Quamolit/blossom-scores/pr/<PR编号>/` 预览入口不变。
+现有生产构建先通过原浏览器回归，再从同一源码构建 CDN 资源。
+仅同仓库 PR 和原手动部署事件上传，fork PR 只测试 / 构建，main push 不部署。
+生产 COS 前缀 `Quamolit/blossom-scores/`、原 web-assets 路径与手动部署条件保持，
+HTML 在 COS 校验成功后上传；队列不取消进行中的上传。
+需要仓库或组织提供 `COS_BUCKET`、`COS_SECRET_ID`、`COS_SECRET_KEY`。
+
 ## English
 
 The restored game uses Calcit 0.28.0 and Quamolit `0.0.18-alpha.3`. Six petals retain signed scores, seeded generation, position chaining and interruptible scale/fade transitions. Press Space or the button to restart a 60-second game. Typed Calcit owns gameplay, Scene construction and hit testing; browser JavaScript wires lifecycle only. Run `yarn compile && yarn dev`; `yarn test` checks actual production interaction and independent DPR1/2 rendering. Canvas2D only; WebGPU/performance and persistent event history are not claimed.
