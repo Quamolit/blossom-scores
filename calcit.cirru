@@ -12,14 +12,14 @@
       :defs $ {}
         'Flower $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct Flower (:id 'Number) (:position 'quamolit.motion/Vec2) (:start 'Number) (:from 'Number) (:exiting? 'Bool)
-            :scores $ :: 'List 'Number
+            :scores $ quote $ List Number
           :examples $ []
-          :schema $ :: 'StructDef
+          :schema $ quote StructDef
         'Game $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct Game (:seed 'Number) (:generation 'Number) (:active 'app.main/Flower) (:score 'Number) (:running? 'Bool) (:started 'Number) (:event-time 'Number)
-            :leaving $ :: 'List 'app.main/Flower
+            :leaving $ quote $ List app.main/Flower
           :examples $ []
-          :schema $ :: 'StructDef
+          :schema $ quote StructDef
         'alpha-at $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn alpha-at (item time)
             let
@@ -33,8 +33,7 @@
                   , time
               , value
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'app.main/Flower 'Number
+          :schema $ quote $ Fn app.main/Flower Number (-> Number)
         'draw! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn draw! (context document width height dpr)
             let
@@ -50,15 +49,12 @@
                         , node
               renderer/draw-document! context projected width height no-image
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ [] 'js-ffi.canvas-batches/CanvasContextHost 'quamolit.scene-ir/SceneDocument 'Number 'Number 'Number
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn js-ffi.canvas-batches/CanvasContextHost quamolit.scene-ir/SceneDocument Number Number Number (-> Unit) (:features :js-ffi)
         'empty-nodes $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn empty-nodes () ([])
           :examples $ []
-          :schema $ :: 'Fn $ {}
-            :args $ []
-            :return $ :: 'List 'quamolit.scene-ir/SceneNode
+          :schema $ quote $ Fn
+            -> $ List quamolit.scene-ir/SceneNode
         'exit-flower $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn exit-flower (item time)
             struct-with item
@@ -66,32 +62,30 @@
               :start time
               :exiting? true
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'app.main/Flower)
-            :args $ [] 'app.main/Flower 'Number
+          :schema $ quote $ Fn app.main/Flower Number (-> app.main/Flower)
         'flatten-nodes $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn flatten-nodes (lists)
-            list-match lists
-              () $ []
-              (head tail)
+            match (destruct-list lists)
+              (:none) ([])
+              (:some head tail)
                 concat head $ flatten-nodes tail
           :examples $ []
-          :schema $ :: 'Fn $ {}
-            :args $ [] $ :: 'List (:: 'List 'quamolit.scene-ir/SceneNode)
-            :return $ :: 'List 'quamolit.scene-ir/SceneNode
+          :schema $ quote $ Fn
+            List $ List quamolit.scene-ir/SceneNode
+            -> $ List quamolit.scene-ir/SceneNode
         'flower $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn flower (seed id position time)
             let
                 randoms $ foldl (range 6) ([])
                   fn (values index)
                     conj values $ next-seed $ if (empty? values) seed
-                      &list:nth values $ dec $ count values
+                      &list:nth values $ dec $ .len values
               Flower :id id :position position :start time :from 0 :exiting? false :scores $ map randoms $ fn (value)
                 -
                   floor $ * 200 $ / value 2147483647
                   , 140
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'app.main/Flower)
-            :args $ [] 'Number 'Number 'quamolit.motion/Vec2 'Number
+          :schema $ quote $ Fn Number Number quamolit.motion/Vec2 Number (-> app.main/Flower)
         'flower-nodes $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn flower-nodes (item time interactive?)
             let
@@ -107,9 +101,8 @@
                   fn (index) (petal-nodes item interactive? index)
               concat ([] root) children
           :examples $ []
-          :schema $ :: 'Fn $ {}
-            :args $ [] 'app.main/Flower 'Number 'Bool
-            :return $ :: 'List 'quamolit.scene-ir/SceneNode
+          :schema $ quote $ Fn app.main/Flower Number Bool
+            -> $ List quamolit.scene-ir/SceneNode
         'hit-at $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn hit-at (plan x y)
             match (hit/hit-test-plan plan x y)
@@ -121,13 +114,11 @@
                       = (:target result) (str |petal- index)
                   .unwrap-or -1
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'quamolit.scene-hit/HitPlan 'Number 'Number
+          :schema $ quote $ Fn quamolit.scene-hit/HitPlan Number Number (-> Number)
         'hit-plan $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn hit-plan (document) (hit/compile-hit-plan document)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'quamolit.scene-hit/HitPlan)
-            :args $ [] 'quamolit.scene-ir/SceneDocument
+          :schema $ quote $ Fn quamolit.scene-ir/SceneDocument (-> quamolit.scene-hit/HitPlan)
         'hsl-channel $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn hsl-channel (h offset)
             let
@@ -142,8 +133,7 @@
                 factor $ if (< high 1) high 1
               - 0.5 $ * 0.45 factor
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'Number 'Number
+          :schema $ quote $ Fn Number Number (-> Number)
         'initial $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn initial (seed)
             assert |invalid-blossom-seed $ and (motion/finite-number? seed) (> seed 0) (< seed 2147483647)
@@ -152,44 +142,38 @@
               flower seed 0 (motion/Vec2 :x 0 :y 0) 0
               , :score 0 :running? false :started 0 :event-time 0 :leaving $ []
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'app.main/Game)
-            :args $ [] 'Number
+          :schema $ quote $ Fn Number (-> app.main/Game)
         'live-leaving $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn live-leaving (model time)
             filter (:leaving model)
               fn (item)
                 > (alpha-at item time) 0
           :examples $ []
-          :schema $ :: 'Fn $ {}
-            :args $ [] 'app.main/Game 'Number
-            :return $ :: 'List 'app.main/Flower
+          :schema $ quote $ Fn app.main/Game Number
+            -> $ List app.main/Flower
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
-            assert |empty-blossom-entry $ = 14 $ count
+            assert |empty-blossom-entry $ = 14 $ .len
               :nodes $ sample (initial 17) 0.25 1000 700
             , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
+          :schema $ quote $ Fn (-> Unit)
         'next-seed $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn next-seed (seed)
             remainder (* 48271 seed) 2147483647
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'Number
+          :schema $ quote $ Fn Number (-> Number)
         'no-image $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn no-image (id version) (raise |blossom-has-no-images)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'js-ffi.browser/ImageHost)
-            :args $ [] 'String 'Number
+          :schema $ quote $ Fn String Number (-> js-ffi.browser/ImageHost)
         'petal-color $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn petal-color (score)
             let
                 h $ remainder (* 4 score) 360
               motion/ColorRgba :r (hsl-channel h 0) :g (hsl-channel h 8) :b (hsl-channel h 4) :a 1
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'quamolit.motion/ColorRgba)
-            :args $ [] 'Number
+          :schema $ quote $ Fn Number (-> quamolit.motion/ColorRgba)
         'petal-nodes $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn petal-nodes (item interactive? index)
             let
@@ -206,15 +190,14 @@
                 label $ scene/SceneNode :id (str circle-id |/label) :key (str circle-id |/label) :parent id :bindings ([]) :interaction (scene/SceneInteraction :none) :content $ scene/SceneContent :text
                   scene/TextNode :x
                     - (:x offset)
-                      * 4.8 $ count $ str score
+                      * 4.8 $ .len $ str score
                     , :y (:y offset) :size 16 :text (str score) :fill
                       motion/ColorRgba :r 1 :g 1 :b 1 :a 1
                       , :font $ scene/FontSpec :family | :fallback (scene/FontFallback :monospace) :version 0
               [] circle label
           :examples $ []
-          :schema $ :: 'Fn $ {}
-            :args $ [] 'app.main/Flower 'Bool 'Number
-            :return $ :: 'List 'quamolit.scene-ir/SceneNode
+          :schema $ quote $ Fn app.main/Flower Bool Number
+            -> $ List quamolit.scene-ir/SceneNode
         'petal-offset $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn petal-offset (index)
             let
@@ -223,26 +206,22 @@
                 * 80 $ sin angle
                 , :y $ * 80 $ cos angle
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'quamolit.motion/Vec2)
-            :args $ [] 'Number
+          :schema $ quote $ Fn Number (-> quamolit.motion/Vec2)
         'playing? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn playing? (model time)
             and (:running? model)
               > (remaining model time) 0
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Bool)
-            :args $ [] 'app.main/Game 'Number
+          :schema $ quote $ Fn app.main/Game Number (-> Bool)
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! () &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
+          :schema $ quote $ Fn (-> Unit)
         'remainder $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn remainder (value divisor)
             - value $ * divisor $ floor (/ value divisor)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'Number 'Number
+          :schema $ quote $ Fn Number Number (-> Number)
         'remaining $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn remaining (model time)
             if (:running? model)
@@ -252,8 +231,7 @@
                 if (< seconds 0) 0 $ if (> seconds 60) 60 seconds
               , 0
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'app.main/Game 'Number
+          :schema $ quote $ Fn app.main/Game Number (-> Number)
         'restart $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn restart (model time)
             assert |invalid-blossom-event-time $ and (motion/finite-number? time)
@@ -266,8 +244,7 @@
               struct-with model (:seed seed) (:generation generation) (:score 0) (:running? true) (:started time) (:event-time time) (:leaving leaving)
                 :active $ flower seed generation (motion/Vec2 :x 0 :y 0) time
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'app.main/Game)
-            :args $ [] 'app.main/Game 'Number
+          :schema $ quote $ Fn app.main/Game Number (-> app.main/Game)
         'sample $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn sample (model time width height)
             assert |invalid-blossom-time $ and (motion/finite-number? time) (>= time 0)
@@ -287,8 +264,7 @@
                   fn (item) (flower-nodes item time false)
               scene/SceneDocument :nodes $ concat ([] root) active leaving
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'quamolit.scene-ir/SceneDocument)
-            :args $ [] 'app.main/Game 'Number 'Number 'Number
+          :schema $ quote $ Fn app.main/Game Number Number Number (-> quamolit.scene-ir/SceneDocument)
         'select $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn select (model time index)
             assert |invalid-blossom-event-time $ and (motion/finite-number? time)
@@ -317,8 +293,7 @@
                   :leaving $ conj (live-leaving model time) (exit-flower active time)
                   :active $ flower seed generation position time
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'app.main/Game)
-            :args $ [] 'app.main/Game 'Number 'Number
+          :schema $ quote $ Fn app.main/Game Number Number (-> app.main/Game)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
           :require (quamolit.motion :as motion) (quamolit.scene-ir :as scene) (quamolit.canvas-scene :as renderer) (quamolit.scene-hit :as hit)
