@@ -11,13 +11,13 @@
     %{} 'FileEntry
       :defs $ {}
         'Flower $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defstruct Flower (:id 'Number) (:position 'quamolit.motion/Vec2) (:start 'Number) (:from 'Number) (:exiting? 'Bool)
-            :scores $ quote $ List Number
+          :code $ quote $ defstruct Flower (:id Number) (:position quamolit.motion/Vec2) (:start Number) (:from Number) (:exiting? Bool)
+            :scores $ List Number
           :examples $ []
           :schema $ quote StructDef
         'Game $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defstruct Game (:seed 'Number) (:generation 'Number) (:active 'app.main/Flower) (:score 'Number) (:running? 'Bool) (:started 'Number) (:event-time 'Number)
-            :leaving $ quote $ List app.main/Flower
+          :code $ quote $ defstruct Game (:seed Number) (:generation Number) (:active app.main/Flower) (:score Number) (:running? Bool) (:started Number) (:event-time Number)
+            :leaving $ List app.main/Flower
           :examples $ []
           :schema $ quote StructDef
         'alpha-at $ %{} 'CodeEntry (:doc |)
