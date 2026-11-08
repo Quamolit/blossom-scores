@@ -8,7 +8,7 @@
 
 ## 运行
 
-需要 Node.js 24、Calcit CLI 0.32.1、`caps`；runtime 同步为0.32.1，Quamolit 固定正式源码模块 `0.0.18`，Yarn 使用 node-modules linker。
+需要 Node.js 24、Calcit CLI 0.38.0、`caps`；runtime 同步为0.38.0，Quamolit 固定正式源码模块 `0.0.20`，Yarn 使用 node-modules linker。
 
 ```bash
 corepack enable
@@ -33,7 +33,7 @@ yarn format:check
 
 五项测试覆盖严格编译、确定 seed、60秒截止、缩放打断/乱序采样、退出禁命中、默认过期RAF首帧、真实花瓣点击和负分、空格重开、暂停resize与卸载、非二进制精确时间的进入/退出终点，以及 DPR1/2 的独立原生 Canvas 圆形/文字参考。像素门禁：仅覆盖像素四通道均值误差<1/255、alpha最大误差≤1/255、六个内区样本各通道≤1/255；不以大片空白稀释误差。截图/JSON证据与编译结果在忽略目录，不入库。
 
-Quamolit 旧版公共 tween 在浮点终点可能略越过端点，例如 start=0.3、duration=0.25、time=0.55 返回1.0000000000000002，见 [Quamolit #213](https://github.com/Quamolit/quamolit/issues/213)。正式源码模块 0.0.18 保留 [#217](https://github.com/Quamolit/quamolit/pull/217) 的精确终帧和端点包络修复。本项目升级后移除 `alpha-at` 的重复透明度夹取，由公共 tween 保证范围；保留严格 Scene 校验、原浮点终点和 DPR1/2 回归，不放宽画面容差，不增加测试脚本。
+Quamolit 旧版公共 tween 在浮点终点可能略越过端点，例如 start=0.3、duration=0.25、time=0.55 返回1.0000000000000002，见 [Quamolit #213](https://github.com/Quamolit/quamolit/issues/213)。正式源码模块 0.0.20 保留 [#217](https://github.com/Quamolit/quamolit/pull/217) 的精确终帧和端点包络修复。本项目升级后移除 `alpha-at` 的重复透明度夹取，由公共 tween 保证范围；保留严格 Scene 校验、原浮点终点和 DPR1/2 回归，不放宽画面容差，不增加测试脚本。
 
 时间采样不会改写 Model；事件时间须非降序。测试宿主的 seek 不能越过当前模型的最近事件向前回溯，需要从同 seed 重载并重放事件。此版不提供持久化完整事件日志，也不改变旧游戏可将花朵追到画面外的规则。
 
@@ -41,7 +41,7 @@ Snapshot 是源码，修改应通过 Calcit `edit/tree/cursor/config` 的原子�
 
 ## 前端部署
 
-COS 仅上传 `dist/`，使用正式 `cos-upload-action@v1.2.0` 的内置
+COS 仅上传 `dist/`，使用正式 `cos-upload-action@v1.3.0` 的内置
 `public-base-url` 逐文件校验，不增加上传验证脚本。PR 资源前缀为
 `Quamolit/blossom-scores/pr/<PR编号>/<run>/<attempt>/`，原
 `https://repo.tiye.me/Quamolit/blossom-scores/pr/<PR编号>/` 预览入口不变。
@@ -53,7 +53,7 @@ HTML 在 COS 校验成功后上传；队列不取消进行中的上传。
 
 ## English
 
-The restored game uses Calcit 0.32.1 and Quamolit `0.0.18`, including the public tween endpoint fix. Six petals retain signed scores, seeded generation, position chaining and interruptible scale/fade transitions. Press Space or the button to restart a 60-second game. Typed Calcit owns gameplay, Scene construction and hit testing; browser JavaScript wires lifecycle only. Run `yarn compile && yarn dev`; `yarn test` checks actual production interaction and independent DPR1/2 rendering. Canvas2D only; WebGPU/performance and persistent event history are not claimed.
+The restored game uses Calcit 0.38.0 and Quamolit `0.0.20`, including the public tween endpoint fix. Six petals retain signed scores, seeded generation, position chaining and interruptible scale/fade transitions. Press Space or the button to restart a 60-second game. Typed Calcit owns gameplay, Scene construction and hit testing; browser JavaScript wires lifecycle only. Run `yarn compile && yarn dev`; `yarn test` checks actual production interaction and independent DPR1/2 rendering. Canvas2D only; WebGPU/performance and persistent event history are not claimed.
 
 ## License
 
