@@ -8,7 +8,7 @@
 
 ## 运行
 
-需要 Node.js 24、Calcit CLI 0.40.0、`caps`；runtime 同步为0.40.0，Quamolit 固定正式源码模块 `0.0.20`，Yarn 使用 node-modules linker。
+需要 Node.js 24、Calcit CLI 0.41.0、`caps`；runtime 同步为0.41.0，Quamolit 固定正式源码模块 `0.0.20`，Yarn 使用 node-modules linker。
 
 ```bash
 corepack enable
@@ -53,7 +53,7 @@ HTML 在 COS 校验成功后上传；队列不取消进行中的上传。
 
 ## English
 
-The restored game uses Calcit 0.40.0 and Quamolit `0.0.20`, including the public tween endpoint fix. Six petals retain signed scores, seeded generation, position chaining and interruptible scale/fade transitions. Press Space or the button to restart a 60-second game. Typed Calcit owns gameplay, Scene construction and hit testing; browser JavaScript wires lifecycle only. Run `yarn compile && yarn dev`; `yarn test` checks actual production interaction and independent DPR1/2 rendering. Canvas2D only; WebGPU/performance and persistent event history are not claimed.
+The restored game uses Calcit 0.41.0 and Quamolit `0.0.20`, including the public tween endpoint fix. Six petals retain signed scores, seeded generation, position chaining and interruptible scale/fade transitions. Press Space or the button to restart a 60-second game. Typed Calcit owns gameplay, Scene construction and hit testing; browser JavaScript wires lifecycle only. Run `yarn compile && yarn dev`; `yarn test` checks actual production interaction and independent DPR1/2 rendering. Canvas2D only; WebGPU/performance and persistent event history are not claimed.
 
 ## License
 

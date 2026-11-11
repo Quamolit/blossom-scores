@@ -33,7 +33,7 @@
                   , time
               , value
           :examples $ []
-          :schema $ quote $ Fn app.main/Flower Number (-> Number)
+          :schema $ quote $ Fn Flower Number (-> Number)
         'draw! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn draw! (context document width height dpr)
             let
@@ -49,12 +49,12 @@
                         , node
               renderer/draw-document! context projected width height no-image
           :examples $ []
-          :schema $ quote $ Fn js-ffi.canvas-batches/CanvasContextHost quamolit.scene-ir/SceneDocument Number Number Number (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn js-ffi.canvas-batches/CanvasContextHost scene/SceneDocument Number Number Number (-> Unit) (:features :js-ffi)
         'empty-nodes $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn empty-nodes () ([])
           :examples $ []
           :schema $ quote $ Fn
-            -> $ List quamolit.scene-ir/SceneNode
+            -> $ List scene/SceneNode
         'exit-flower $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn exit-flower (item time)
             struct-with item
@@ -62,7 +62,7 @@
               :start time
               :exiting? true
           :examples $ []
-          :schema $ quote $ Fn app.main/Flower Number (-> app.main/Flower)
+          :schema $ quote $ Fn Flower Number (-> Flower)
         'flatten-nodes $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn flatten-nodes (lists)
             match (destruct-list lists)
@@ -71,8 +71,8 @@
                 concat head $ flatten-nodes tail
           :examples $ []
           :schema $ quote $ Fn
-            List $ List quamolit.scene-ir/SceneNode
-            -> $ List quamolit.scene-ir/SceneNode
+            List $ List scene/SceneNode
+            -> $ List scene/SceneNode
         'flower $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn flower (seed id position time)
             let
@@ -85,7 +85,7 @@
                   floor $ * 200 $ / value 2147483647
                   , 140
           :examples $ []
-          :schema $ quote $ Fn Number Number quamolit.motion/Vec2 Number (-> app.main/Flower)
+          :schema $ quote $ Fn Number Number motion/Vec2 Number (-> Flower)
         'flower-nodes $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn flower-nodes (item time interactive?)
             let
@@ -101,8 +101,8 @@
                   fn (index) (petal-nodes item interactive? index)
               concat ([] root) children
           :examples $ []
-          :schema $ quote $ Fn app.main/Flower Number Bool
-            -> $ List quamolit.scene-ir/SceneNode
+          :schema $ quote $ Fn Flower Number Bool
+            -> $ List scene/SceneNode
         'hit-at $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn hit-at (plan x y)
             match (hit/hit-test-plan plan x y)
@@ -114,11 +114,11 @@
                       = (:target result) (str |petal- index)
                   .unwrap-or -1
           :examples $ []
-          :schema $ quote $ Fn quamolit.scene-hit/HitPlan Number Number (-> Number)
+          :schema $ quote $ Fn hit/HitPlan Number Number (-> Number)
         'hit-plan $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn hit-plan (document) (hit/compile-hit-plan document)
           :examples $ []
-          :schema $ quote $ Fn quamolit.scene-ir/SceneDocument (-> quamolit.scene-hit/HitPlan)
+          :schema $ quote $ Fn scene/SceneDocument (-> hit/HitPlan)
         'hsl-channel $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn hsl-channel (h offset)
             let
@@ -142,15 +142,15 @@
               flower seed 0 (motion/Vec2 :x 0 :y 0) 0
               , :score 0 :running? false :started 0 :event-time 0 :leaving $ []
           :examples $ []
-          :schema $ quote $ Fn Number (-> app.main/Game)
+          :schema $ quote $ Fn Number (-> Game)
         'live-leaving $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn live-leaving (model time)
             filter (:leaving model)
               fn (item)
                 > (alpha-at item time) 0
           :examples $ []
-          :schema $ quote $ Fn app.main/Game Number
-            -> $ List app.main/Flower
+          :schema $ quote $ Fn Game Number
+            -> $ List Flower
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             assert |empty-blossom-entry $ = 14 $ .len
@@ -173,7 +173,7 @@
                 h $ remainder (* 4 score) 360
               motion/ColorRgba :r (hsl-channel h 0) :g (hsl-channel h 8) :b (hsl-channel h 4) :a 1
           :examples $ []
-          :schema $ quote $ Fn Number (-> quamolit.motion/ColorRgba)
+          :schema $ quote $ Fn Number (-> motion/ColorRgba)
         'petal-nodes $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn petal-nodes (item interactive? index)
             let
@@ -196,8 +196,8 @@
                       , :font $ scene/FontSpec :family | :fallback (scene/FontFallback :monospace) :version 0
               [] circle label
           :examples $ []
-          :schema $ quote $ Fn app.main/Flower Bool Number
-            -> $ List quamolit.scene-ir/SceneNode
+          :schema $ quote $ Fn Flower Bool Number
+            -> $ List scene/SceneNode
         'petal-offset $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn petal-offset (index)
             let
@@ -206,13 +206,13 @@
                 * 80 $ sin angle
                 , :y $ * 80 $ cos angle
           :examples $ []
-          :schema $ quote $ Fn Number (-> quamolit.motion/Vec2)
+          :schema $ quote $ Fn Number (-> motion/Vec2)
         'playing? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn playing? (model time)
             and (:running? model)
               > (remaining model time) 0
           :examples $ []
-          :schema $ quote $ Fn app.main/Game Number (-> Bool)
+          :schema $ quote $ Fn Game Number (-> Bool)
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! () &unit
           :examples $ []
@@ -231,7 +231,7 @@
                 if (< seconds 0) 0 $ if (> seconds 60) 60 seconds
               , 0
           :examples $ []
-          :schema $ quote $ Fn app.main/Game Number (-> Number)
+          :schema $ quote $ Fn Game Number (-> Number)
         'restart $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn restart (model time)
             assert |invalid-blossom-event-time $ and (motion/finite-number? time)
@@ -244,7 +244,7 @@
               struct-with model (:seed seed) (:generation generation) (:score 0) (:running? true) (:started time) (:event-time time) (:leaving leaving)
                 :active $ flower seed generation (motion/Vec2 :x 0 :y 0) time
           :examples $ []
-          :schema $ quote $ Fn app.main/Game Number (-> app.main/Game)
+          :schema $ quote $ Fn Game Number (-> Game)
         'sample $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn sample (model time width height)
             assert |invalid-blossom-time $ and (motion/finite-number? time) (>= time 0)
@@ -264,7 +264,7 @@
                   fn (item) (flower-nodes item time false)
               scene/SceneDocument :nodes $ concat ([] root) active leaving
           :examples $ []
-          :schema $ quote $ Fn app.main/Game Number Number Number (-> quamolit.scene-ir/SceneDocument)
+          :schema $ quote $ Fn Game Number Number Number (-> scene/SceneDocument)
         'select $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn select (model time index)
             assert |invalid-blossom-event-time $ and (motion/finite-number? time)
@@ -293,7 +293,7 @@
                   :leaving $ conj (live-leaving model time) (exit-flower active time)
                   :active $ flower seed generation position time
           :examples $ []
-          :schema $ quote $ Fn app.main/Game Number Number (-> app.main/Game)
+          :schema $ quote $ Fn Game Number Number (-> Game)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
           :require (quamolit.motion :as motion) (quamolit.scene-ir :as scene) (quamolit.canvas-scene :as renderer) (quamolit.scene-hit :as hit)
